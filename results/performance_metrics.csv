@@ -1,0 +1,4 @@
+Model,Accuracy,Precision (Macro),Recall (Macro),F1-Score (Macro)
+Swin Transformer,96.60%,96.62%,96.59%,96.60%
+DeiT,96.12%,96.11%,96.18%,96.14%
+MAE ViT,95.39%,95.50%,95.25%,95.34%

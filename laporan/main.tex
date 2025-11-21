@@ -1,0 +1,426 @@
+\documentclass[12pt,a4paper]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{tabulary}
+% \usepackage{minted} % Removed to avoid shell-escape requirement if not used
+\usepackage{fancyhdr}
+\usepackage{placeins}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage[indonesian]{babel}
+
+% Configuration
+\geometry{left=3cm,right=2.5cm,top=3cm,bottom=2.5cm}
+\hypersetup{
+    colorlinks,
+    linkcolor={black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+\onehalfspacing
+
+% Rename captions
+\captionsetup[table]{name=Tabel}
+\captionsetup[figure]{name=Gambar}
+
+% Code listing style
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\begin{document}
+%===========================================================
+% I. COVER
+%===========================================================
+\begin{titlepage}
+    \centering
+    
+    {\Large \textbf{LAPORAN TUGAS EKSPLORASI}} \\
+    \vspace{0.5cm}
+    {\Large \textbf{PERBANDINGAN MODEL VISION TRANSFORMER}} \\
+    {\large (Swin Transformer, DeiT, dan MAE)}
+    
+    \vspace{2cm}
+    
+    \includegraphics[width=0.2\textwidth]{Figure/logo-itera.png} 
+    
+    \vspace{1cm}
+    
+    \textbf{Disusun Oleh:} \\
+    \vspace{0.5cm}
+    {\large Rustian Afencius Marbun (122140155)} \\
+    
+    \vspace{2cm}
+    
+    \textbf{Mata Kuliah:} \\
+    Pembelajaran Mendalam \\
+    \vspace{0.5cm}
+    \textbf{Dosen Pengampu:} \\
+    \vspace{0.5cm}
+    \begin{minipage}{0.6\textwidth}
+        \begin{enumerate}
+            \item Imam Ekowicaksono, S.Si., M.Si.
+            \item Rahman Indra Kesuma, S.Kom., M.Cs.
+            \item Martin C.T.Manullang, P.hD.
+            \item Meida Cahyo Untoro, S.Kom., M.Kom.
+        \end{enumerate}
+    \end{minipage}
+
+    \vfill
+    
+    {\large \textbf{PROGRAM STUDI TEKNIK INFORMATIKA}} \\
+    {\large \textbf{INSTITUT TEKNOLOGI SUMATERA}} \\
+    {\large \textbf{2025}}
+    
+\end{titlepage}
+
+\newpage
+\thispagestyle{empty}
+\vspace*{5cm}
+\begin{center}
+    \textbf{Link GitHub Repository:} \\
+    \url{https://github.com/username/VisionTransformer-Comparison} % Ganti dengan link repository Anda
+\end{center}
+\newpage
+
+\renewcommand{\contentsname}{\centering DAFTAR ISI}
+\tableofcontents
+\newpage
+
+%===========================================================
+% II. PENDAHULUAN
+%===========================================================
+\section{PENDAHULUAN}
+
+\subsection{Latar Belakang}
+Dalam beberapa tahun terakhir, bidang \textit{Computer Vision} telah mengalami 
+pergeseran paradigma yang signifikan dengan munculnya arsitektur Transformer. 
+Awalnya dirancang untuk pemrosesan bahasa alami (\textit{Natural Language Processing}/NLP), Transformer telah menunjukkan kemampuan luar biasa dalam memahami konteks global dalam citra, menantang dominasi \textit{Convolutional Neural Networks} (CNN) yang telah lama menjadi standar industri \cite{dosovitskiy2020image, han2023survey}.
+
+Vision Transformer (ViT) membagi citra menjadi \textit{patch-patch} kecil dan memprosesnya sebagai urutan token, memungkinkan model untuk menangkap hubungan jarak jauh antar piksel yang seringkali sulit ditangkap oleh kernel konvolusi lokal. Namun, ViT standar memiliki tantangan tersendiri, seperti kebutuhan data yang sangat besar dan biaya komputasi yang tinggi. Hal ini memicu pengembangan berbagai varian ViT yang lebih efisien dan efektif.
+
+\subsection{Motivasi}
+Eksperimen ini dilatarbelakangi oleh urgensi untuk mengevaluasi karakteristik kinerja berbagai varian Vision Transformer (ViT) modern. Tiga model dipilih untuk merepresentasikan pendekatan berbeda dalam mengatasi keterbatasan ViT orisinal.
+
+Pertama, Swin Transformer dipilih karena pendekatan uniknya yang menerapkan struktur hierarkis dan mekanisme \textit{shifted windows}. Pendekatan ini dirancang untuk meningkatkan efisiensi komputasi dengan membatasi perhitungan \textit{self-attention} pada jendela lokal, guna mengatasi masalah kompleksitas kuadratik yang terdapat pada ViT standar \cite{liu2021swin}.
+
+Selanjutnya, DeiT (Data-efficient Image Transformer) menjadi fokus analisis karena kemampuannya dalam menangani keterbatasan data pelatihan. Model ini menggunakan strategi distilasi pengetahuan (\textit{knowledge distillation}) yang memungkinkan pelatihan model Transformer secara efisien dan berkinerja tinggi, meskipun menggunakan jumlah data yang lebih sedikit \cite{touvron2021training}.
+
+Terakhir, MAE (Masked Autoencoder) merepresentasikan pendekatan \textit{self-supervised learning} yang inovatif. Melalui rekonstruksi bagian citra yang hilang (\textit{masked}), MAE memungkinkan model untuk mempelajari representasi fitur yang kuat dan dapat digeneralisasi tanpa bergantung sepenuhnya pada data berlabel dalam jumlah besar \cite{he2022masked}.
+
+\subsection{Tujuan Eksperimen}
+Tujuan utama laporan ini adalah:
+\begin{enumerate}
+    \item Membandingkan akurasi klasifikasi antara model Swin Transformer, DeiT, dan MAE pada dataset Flowers.
+    \item Menganalisis efisiensi komputasi, yang mencakup waktu inferensi dan \textit{throughput}.
+    \item Mengevaluasi \textit{trade-off} antara ukuran model (jumlah parameter) dan kinerjanya.
+    \item Memberikan rekomendasi pemilihan model berdasarkan berbagai skenario aplikasi.
+\end{enumerate}
+
+%===========================================================
+% III. LANDASAN TEORI
+%===========================================================
+\section{LANDASAN TEORI}
+
+\subsection{Transformer dan Self-Attention}
+Inti dari arsitektur Transformer adalah mekanisme \textit{Self-Attention}, yang diperkenalkan oleh Vaswani et al. \cite{vaswani2017attention}. Mekanisme ini memungkinkan model untuk menimbang pentingnya setiap bagian input terhadap bagian lainnya. Secara matematis, \textit{attention} didefinisikan sebagai:
+
+\begin{equation}
+    \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+
+Dimana $Q$ (Query), $K$ (Key), dan $V$ (Value) adalah proyeksi dari input, dan $d_k$ adalah dimensi dari key. Mekanisme ini memungkinkan pemodelan dependensi global tanpa batasan jarak spasial.
+
+\subsection{Deskripsi Model}
+
+\subsubsection{Swin Transformer}
+Swin Transformer \cite{liu2021swin} memperkenalkan konsep \textit{hierarchical feature maps} dan \textit{shifted windows}. Berbeda dengan ViT yang memproses patch secara global, Swin membatasi \textit{self-attention} pada jendela lokal yang tidak tumpang tindih, kemudian menggeser jendela tersebut pada layer berikutnya untuk memungkinkan komunikasi antar jendela. Ini menghasilkan kompleksitas komputasi yang linear terhadap ukuran citra, bukan kuadratik seperti pada ViT standar.
+
+\subsubsection{DeiT (Data-efficient Image Transformer)}
+DeiT \cite{touvron2021training} dirancang untuk mengatasi masalah kebutuhan data yang besar pada ViT. DeiT memperkenalkan token distilasi (\textit{distillation token}) yang belajar dari output model guru (biasanya CNN). Meskipun dalam eksperimen ini kita menggunakan arsitektur DeiT-Tiny, prinsip desainnya difokuskan pada efisiensi parameter dan kemampuan generalisasi yang baik pada dataset berukuran sedang.
+
+\subsubsection{MAE (Masked Autoencoder)}
+MAE \cite{he2022masked} adalah pendekatan \textit{self-supervised} di mana sebagian besar patch citra (misalnya 75\%) ditutupi (\textit{masked}), dan model dilatih untuk merekonstruksi piksel yang hilang. Encoder hanya memproses patch yang terlihat, membuatnya sangat efisien selama pre-training. Untuk tugas klasifikasi, encoder MAE (biasanya berbasis ViT-Base) di-\textit{fine-tune} pada dataset target.
+
+\subsection{Perbedaan Kunci}
+\begin{table}[h]
+    \centering
+    \caption{Perbedaan Karakteristik Model}
+    \begin{tabular}{@{}llll@{}}
+    \toprule
+    \textbf{Fitur} & \textbf{Swin Transformer} & \textbf{DeiT} & \textbf{MAE (ViT-Base)} \\ \midrule
+    \textbf{Attention} & Local (Windowed) & Global & Global \\
+    \textbf{Struktur} & Hierarkis & Kolumnar (Isotropik) & Kolumnar (Isotropik) \\
+    \textbf{Fokus Utama} & Efisiensi & Data Efficiency & Representation Learning \\
+    \textbf{Ukuran} & Tiny (dalam eksperimen) & Tiny & Base \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Kelebihan dan Kekurangan Model}
+Setiap arsitektur model memiliki karakteristik unik yang memberikan keuntungan tertentu namun juga membawa keterbatasan. Berikut adalah analisis kelebihan dan kekurangan dari ketiga model yang dibandingkan.
+
+\textbf{Swin Transformer} menawarkan kelebihan utama berupa efisiensi komputasi yang tinggi pada citra resolusi tinggi, berkat mekanisme \textit{windowed attention} yang memiliki kompleksitas linear. Struktur hierarkisnya juga memungkinkan ekstraksi fitur multi-skala yang efektif. Namun, model ini memiliki kekurangan pada arsitekturnya yang lebih kompleks dibandingkan ViT standar, terutama pada implementasi \textit{shifted windows} yang memerlukan manajemen memori yang lebih cermat.
+
+\textbf{DeiT (Data-efficient Image Transformer)} unggul dalam kemampuannya mencapai performa tinggi dengan data pelatihan yang terbatas berkat strategi distilasi pengetahuan. Proses pelatihannya cenderung lebih stabil dan konvergen lebih cepat. Kekurangannya terletak pada ketergantungan kinerja model terhadap kualitas model guru (\textit{teacher model}), serta kompleksitas tambahan dalam proses pelatihan yang melibatkan mekanisme distilasi.
+
+\textbf{MAE (Masked Autoencoder)} memiliki keunggulan signifikan dalam efisiensi tahap \textit{pre-training} karena hanya memproses sebagian kecil patch yang terlihat, serta kemampuannya mempelajari representasi fitur yang general tanpa label. Di sisi lain, kekurangannya adalah kebutuhan akan proses \textit{fine-tuning} penuh pada seluruh parameter untuk tugas klasifikasi, yang dapat memakan sumber daya komputasi yang besar, terutama untuk varian model dengan ukuran \textit{Base} atau lebih besar.
+
+%===========================================================
+% IV. METODOLOGI
+%===========================================================
+\section{METODOLOGI}
+
+\subsection{Dataset}
+Dataset yang digunakan adalah \textbf{Flowers Recognition Dataset} \cite{flowers_dataset} yang memiliki total 3670 citra. Dataset ini terdiri dari 5 kelas bunga, yaitu Daisy, Dandelion, Rose, Sunflower, dan Tulip. Secara keseluruhan, dataset terbagi menjadi 2746 citra untuk data latih (\textit{training}) dan 924 citra untuk data uji (\textit{test}).
+
+\subsection{Preprocessing dan Augmentasi}
+Untuk meningkatkan generalisasi model, diterapkan beberapa teknik augmentasi data. Pertama, semua citra diubah ukurannya (\textit{resize}) menjadi $224 \times 224$ piksel. Selanjutnya, dilakukan normalisasi menggunakan nilai mean $[0.485, 0.456, 0.406]$ dan standar deviasi $[0.229, 0.224, 0.225]$. Khusus untuk data latih, diterapkan augmentasi tambahan berupa \textit{Random Horizontal Flip}, \textit{Random Rotation} sebesar 15 derajat, \textit{Color Jitter}, dan \textit{Random Affine}.
+
+\subsection{Konfigurasi Training}
+Pelatihan dilakukan menggunakan \textit{framework} PyTorch dan 
+library \texttt{timm}. Berikut adalah konfigurasi hyperparameter 
+yang digunakan.
+
+\begin{table}[H]
+    \centering
+    \caption{Konfigurasi Hyperparameter}
+    \begin{tabular}{ll}
+    \toprule
+    \textbf{Parameter} & \textbf{Nilai} \\ \midrule
+    Epochs & 10 \\
+    Learning Rate & $1 \times 10^{-4}$ \\
+    Optimizer & AdamW \\
+    Weight Decay & $1 \times 10^{-4}$ \\
+    Batch Size & 32 (16 untuk Swin) \\
+    Loss Function & CrossEntropyLoss \\
+    Scheduler & Cosine Annealing \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Library dan Framework}
+Implementasi eksperimen ini didukung oleh berbagai 
+\textit{library} dan \textit{framework} Python sebagai berikut.
+
+\begin{table}[H]
+    \centering
+    \caption{Daftar Library dan Framework}
+    \begin{tabular}{@{}ll@{}}
+    \toprule
+    \textbf{Library/Framework} & \textbf{Kegunaan} \\ \midrule
+    PyTorch & Framework utama \textit{deep learning} \\
+    timm & Penyedia model ViT \textit{pre-trained} \\
+    Torchvision & Transformasi dan augmentasi citra \\
+    Scikit-learn & Perhitungan metrik evaluasi \\
+    Pandas & Manipulasi data tabular \\
+    Matplotlib \& Seaborn & Visualisasi data dan hasil \\
+    NumPy & Operasi numerik dan array \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Spesifikasi Hardware}
+Eksperimen ini dijalankan pada lingkungan pengembangan Jupyter Notebook di VS Code 
+menggunakan perangkat laptop dengan spesifikasi prosesor Intel Core i5-13420H, 
+GPU NVIDIA GeForce RTX 2050, dan RAM 16GB.
+
+\subsection{Pengukuran Metrik Evaluasi}
+Untuk mengukur kinerja model secara komprehensif, digunakan empat metrik evaluasi utama yaitu Akurasi, Precision, Recall, dan F1-Score. Perhitungan metrik ini didasarkan pada elemen-elemen dalam \textit{confusion matrix}, yaitu \textit{True Positive} (TP), \textit{True Negative} (TN), \textit{False Positive} (FP), dan \textit{False Negative} (FN).
+
+\textbf{Akurasi} mengukur rasio prediksi yang benar terhadap total data:
+\begin{equation}
+    \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+\end{equation}
+
+\textbf{Precision} mengukur ketepatan model dalam memprediksi kelas positif:
+\begin{equation}
+    \text{Precision} = \frac{TP}{TP + FP}
+\end{equation}
+
+\textbf{Recall} mengukur kemampuan model dalam menemukan kembali seluruh data kelas positif:
+\begin{equation}
+    \text{Recall} = \frac{TP}{TP + FN}
+\end{equation}
+
+\textbf{F1-Score} adalah rata-rata harmonik dari Precision dan Recall, memberikan gambaran yang lebih seimbang jika terdapat ketimpangan kelas:
+\begin{equation}
+    \text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+\end{equation}
+
+Selain itu, waktu inferensi diukur dalam milidetik (ms) per citra, dan \textit{throughput} dihitung sebagai jumlah citra yang dapat diproses per detik.
+
+%===========================================================
+% V. HASIL DAN ANALISIS
+%===========================================================
+\section{HASIL DAN ANALISIS}
+
+\subsection{Perbandingan Jumlah Parameter}
+Berikut adalah perbandingan jumlah parameter ketiga model.
+
+\begin{table}[H]
+    \centering
+    \caption{Perbandingan Ukuran Model}
+    \begin{tabular}{@{}lrrr@{}}
+    \toprule
+    \textbf{Model} & \textbf{Parameter (Juta)} & \textbf{Ukuran (MB)} & \textbf{Tipe} \\ \midrule
+    Swin Transformer & 27.52 & 106.06 & Tiny \\
+    DeiT & 5.53 & 21.08 & Tiny \\
+    MAE ViT & 85.80 & 327.31 & Base \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Perbandingan Metrik Performa}
+Evaluasi dilakukan pada set validasi setelah 10 epoch pelatihan. 
+Tabel berikut menampilkan performa model berdasarkan Akurasi, Precision, 
+Recall, dan F1-Score.
+
+\begin{table}[H]
+    \centering
+    \caption{Perbandingan Metrik Evaluasi}
+    \begin{tabular}{@{}lcccc@{}}
+    \toprule
+    \textbf{Model} & \textbf{Akurasi (\%)} & \textbf{Precision (\%)} & \textbf{Recall (\%)} & \textbf{F1-Score (\%)} \\ \midrule
+    Swin Transformer & \textbf{96.60} & \textbf{96.62} & \textbf{96.59} & \textbf{96.60} \\
+    DeiT & 96.12 & 96.11 & 96.18 & 96.14 \\
+    MAE ViT & 95.39 & 95.50 & 95.25 & 95.34 \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+Berdasarkan hasil evaluasi, \textbf{Swin Transformer} mencapai akurasi tertinggi sebesar 96.60\%. Arsitektur hierarkisnya terbukti sangat efektif dalam menangkap fitur visual pada dataset bunga yang memiliki variasi bentuk dan tekstur yang kompleks. Hasil ini sejalan dengan temuan Wang \cite{wang2024flower} yang menyoroti efektivitas ViT dalam klasifikasi bunga. Sementara itu, \textbf{DeiT} menunjukkan performa yang sangat kompetitif dengan akurasi 96.12\%, meskipun memiliki jumlah parameter yang jauh lebih sedikit (sekitar 5 kali lebih kecil dari Swin), yang membuktikan efisiensi arsitekturnya. Di sisi lain, \textbf{MAE ViT} mencatatkan akurasi terendah sebesar 95.39\% dalam eksperimen ini. Hal ini kemungkinan disebabkan oleh ukuran model yang besar (ViT-Base) yang memerlukan lebih banyak data atau durasi pelatihan yang lebih lama untuk mencapai konvergensi optimal dibandingkan varian Tiny.
+
+\subsection{Perbandingan Waktu Inferensi}
+Kecepatan inferensi diukur dalam milidetik per citra (ms/img) dan \textit{throughput} (citra per detik).
+
+\begin{table}[H]
+    \centering
+    \caption{Perbandingan Kecepatan Inferensi}
+    \begin{tabular}{@{}lrr@{}}
+    \toprule
+    \textbf{Model} & \textbf{Waktu (ms/img)} & \textbf{Throughput (img/s)} \\ \midrule
+    Swin Transformer & \textbf{6.38} & \textbf{156.9} \\
+    DeiT & 12.61 & 79.3 \\
+    MAE ViT & 73.03 & 13.7 \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+Dari segi kecepatan, \textbf{Swin Transformer} menjadi model tercepat dengan \textit{throughput} mencapai 156.9 img/s. Hal ini dimungkinkan oleh mekanisme \textit{windowed attention} yang membatasi komputasi hanya pada area lokal, sehingga mempercepat proses dibandingkan \textit{global attention}. Sebaliknya, \textbf{MAE ViT} memiliki kinerja yang jauh lebih lambat dengan \textit{throughput} hanya 13.7 img/s, yang disebabkan oleh kompleksitas kuadratik $O(N^2)$ dari mekanisme \textit{global attention} pada resolusi penuh serta ukuran model yang besar.
+
+\subsection{Visualisasi Hasil}
+Berikut adalah visualisasi hasil pelatihan yang dihasilkan dari notebook, mencakup kurva loss dan confusion matrix.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{1.0\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figure/grafik-training.png}
+        \caption{Grafik Perbandingan Training \textit{Loss} dan \textit{Accuracy}}
+    \end{subfigure}
+    \par\bigskip
+    \begin{subfigure}[b]{1.0\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figure/grafik-validation.png}
+        \caption{Grafik Perbandingan Validasi \textit{Loss} dan \textit{Accuracy}}
+    \end{subfigure}
+    \par\bigskip
+    \begin{subfigure}[b]{1.0\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figure/confusion-matrix.png}
+        \caption{Confusion Matrix Perbandingan Model}
+    \end{subfigure}
+    \caption{Visualisasi Hasil Eksperimen}
+\end{figure}
+
+\subsection{Analisis Mendalam}
+
+\subsubsection{Keunggulan Tiap Model }
+Berdasarkan hasil eksperimen, \textbf{Swin Transformer} menunjukkan keunggulan signifikan dibandingkan model lainnya, terutama dalam hal kecepatan inferensi dan akurasi. Keunggulan ini dapat diatribusikan pada mekanisme \textit{shifted windows} yang membatasi perhitungan \textit{self-attention} pada area lokal, mengurangi kompleksitas komputasi sekaligus menangkap detail tekstur bunga dengan lebih baik. Di sisi lain, \textbf{DeiT} unggul mutlak dalam aspek efisiensi parameter. Dengan hanya 5.5 juta parameter, DeiT mampu mendekati performa Swin (27.5 juta parameter), membuktikan efektivitas metode \textit{knowledge distillation} dalam memadatkan pengetahuan model.
+
+\subsubsection{\textit{Trade-off} Akurasi, Parameter, dan Kecepatan}
+\begin{itemize}
+    \item \textbf{Swin Transformer} menempati titik optimal untuk kinerja tinggi. Model ini menawarkan keseimbangan terbaik antara akurasi dan throughput tercepat, meskipun memiliki ukuran model yang moderat.
+    \item \textbf{DeiT} menawarkan \textit{trade-off} terbaik untuk efisiensi memori. Penurunan akurasi sebesar 0,48\% dibandingkan Swin dikompensasi dengan pengurangan ukuran model yang signifikan sebesar 80\%. Hal ini menjadikannya pilihan ideal untuk perangkat dengan sumber daya terbatas.
+    \item \textbf{MAE ViT} menunjukkan \textit{trade-off} yang kurang menguntungkan dalam eksperimen ini. Ukuran model yang besar (85 juta parameter) serta beban komputasi yang berat tidak sebanding dengan peningkatan akurasi, model ini justru menghasilkan kinerja terendah.
+\end{itemize}
+
+\subsubsection{Kesesuaian Model dengan Dataset}
+\begin{itemize}
+    \item \textbf{DeiT} sangat sesuai dengan dataset ini karena desainnya yang spesifik untuk efisiensi data (\textit{data-efficient}), memungkinkannya belajar dengan baik tanpa risiko \textit{overfitting} yang besar.
+    \item \textbf{Swin Transformer} juga menunjukkan kesesuaian yang tinggi, dimana struktur hierarkisnya membantu model menggeneralisasi fitur visual bunga dengan baik meskipun data terbatas.
+    \item \textbf{MAE ViT} (Base) terlihat kurang sesuai untuk dataset skala ini jika ditinjau dari perspektif efisiensi \textit{fine-tuning}. Model sebesar ini biasanya membutuhkan dataset yang jauh lebih masif untuk benar-benar memanfaatkan kapasitas pembelajarannya, sehingga cenderung sulit konvergen optimal pada dataset kecil.
+\end{itemize}
+
+
+%===========================================================
+% VI. KESIMPULAN DAN SARAN
+%===========================================================
+\section{KESIMPULAN DAN SARAN}
+
+\subsection{Kesimpulan}
+Berdasarkan hasil eksperimen perbandingan model Vision Transformer pada dataset Flowers, dapat disimpulkan beberapa poin penting sebagai berikut.
+\begin{enumerate}
+    \item \textbf{Swin Transformer} keluar sebagai model dengan performa terbaik secara keseluruhan, mencatatkan akurasi tertinggi (96.60\%) dan kecepatan inferensi tercepat.
+    \item \textbf{DeiT} membuktikan efisiensinya sebagai model yang sangat ringan (5.5M parameter) namun tetap mampu memberikan akurasi tinggi (96.12\%).
+    \item \textbf{MAE ViT} (Base) kurang optimal untuk skenario ini dibandingkan varian Tiny lainnya, karena ukurannya yang besar membebani komputasi tanpa memberikan peningkatan akurasi yang signifikan pada dataset skala kecil ini.
+\end{enumerate}
+
+\subsection{Rekomendasi Pemilihan Model}
+Berdasarkan temuan eksperimen, untuk skenario yang membutuhkan akurasi maksimal dan pemrosesan \textit{real-time}, disarankan untuk menggunakan \textbf{Swin Transformer} karena presisi tinggi dan respons cepatnya. Sedangkan untuk skenario yang mengutamakan efisiensi komputasi dan penggunaan pada perangkat edge, \textbf{DeiT} sangat direkomendasikan, terutama untuk aplikasi mobile atau IoT dengan keterbatasan memori.
+
+\subsection{Saran Pengembangan}
+Untuk pengembangan penelitian selanjutnya, disarankan untuk memperluas dataset dengan menambah jumlah sampel dan variasi kelas bunga guna menguji kemampuan generalisasi model secara lebih baik. Eksplorasi teknik augmentasi data yang lebih beragam serta penyetelan \textit{hyperparameter} yang lebih mendalam juga diperlukan untuk memaksimalkan potensi setiap model. Selain itu, implementasi model ke dalam skenario penggunaan nyata, seperti aplikasi berbasis \textit{mobile} atau web, dapat dilakukan untuk memvalidasi efektivitas model di luar lingkungan eksperimen.
+
+%===========================================================
+% VII. DAFTAR PUSTAKA
+%===========================================================
+\newpage
+\bibliographystyle{IEEEtran}
+\bibliography{Referensi}
+
+%===========================================================
+% VIII. LAMPIRAN
+%===========================================================
+\newpage
+\section*{LAMPIRAN}
+\addcontentsline{toc}{section}{LAMPIRAN}
+
+\subsection*{A. Source Code}
+Source code lengkap eksperimen ini tersedia pada repository \texttt{https://github.com/username/repository-name} 
+dalam file Jupyter Notebook \texttt{vision\_transformer\_comparison.ipynb}.
+
+\subsection*{B. Output Training Log}
+Log pelatihan lengkap tersimpan dalam repository github pada file \texttt{results/training\_histories.json}.
+
+\subsection*{C. Screenshot Hasil}
+Visualisasi hasil pelatihan telah dipindahkan ke Bab V (Hasil dan Analisis) untuk memudahkan pembacaan.
+
+\end{document}

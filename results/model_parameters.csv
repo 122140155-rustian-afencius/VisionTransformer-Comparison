@@ -1,0 +1,4 @@
+Model,Total Parameters,Trainable Parameters,Non-trainable Parameters,Model Size (MB)
+Swin Transformer,"27,523,199","27,523,199",0,106.06
+DeiT,"5,525,381","5,525,381",0,21.08
+MAE ViT,"85,802,501","85,802,501",0,327.31

@@ -1,0 +1,11 @@
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Dataset (downloaded by script)
+flowers-dataset/
+
+# VS Code
+.vscode/
+
+# Results (ignore .pth files)
+results/*.pth

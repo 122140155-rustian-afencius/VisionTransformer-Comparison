@@ -1,0 +1,4 @@
+Model,Avg Time per Image (ms),Std Time per Batch (ms),Throughput (images/sec)
+Swin Transformer,6.38,0.65,156.86
+DeiT,12.61,4.22,79.32
+MAE ViT,73.03,31.70,13.69
