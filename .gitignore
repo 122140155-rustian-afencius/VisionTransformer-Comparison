@@ -2,7 +2,8 @@
 .ipynb_checkpoints/
 
 # Dataset (downloaded by script)
-flowers-dataset/
+flowers-dataset/*
+!flowers-dataset/.gitkeep
 
 # VS Code
 .vscode/
