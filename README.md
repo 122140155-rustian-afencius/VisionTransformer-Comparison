@@ -38,9 +38,6 @@ pip install -r requirements.txt
 Buka file `vision_transformer_comparison.ipynb` menggunakan Jupyter Notebook atau Visual Studio Code.
 Jalankan semua sel secara berurutan.
 
-**Catatan tentang Dataset:**
-Kode ini menggunakan library `kagglehub` untuk mengunduh dataset secara otomatis. Anda **tidak perlu** mengatur kredensial API Kaggle (`kaggle.json`) secara manual. Dataset akan diunduh dan disalin ke folder `flowers-dataset/`.
-
 ## Hasil
 
 Hasil eksperimen akan disimpan secara otomatis di folder `results/`, meliputi:
@@ -50,11 +47,3 @@ Hasil eksperimen akan disimpan secara otomatis di folder `results/`, meliputi:
 - `inference_times.csv`: Data kecepatan inferensi.
 - `model_parameters.csv`: Ukuran dan jumlah parameter model.
 - File model (`.pth`) dan riwayat pelatihan (`.json`).
-
-## Penulis
-
-**Rustian Afencius Marbun** (122140155)
-
----
-
-_Dibuat untuk memenuhi tugas mata kuliah Pembelajaran Mendalam._

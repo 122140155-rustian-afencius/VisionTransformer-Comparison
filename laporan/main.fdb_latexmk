@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1763739054.48023 "main.aux" "main.bbl" "main" 1763739853.21044 0
+["bibtex main"] 1763739054.48023 "main.aux" "main.bbl" "main" 1763742169.58032 0
   "./Referensi.bib" 1763735910 4520 1618ea5bda817325a780bccc751a5d96 ""
   "C:/Program Files/MiKTeX/bibtex/bst/ieeetran/IEEEtran.bst" 1440622569 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "main.aux" 1763739852 6101 6f8a70b5b667d57cee8b6232e327a38a "pdflatex"
+  "main.aux" 1763742168 6101 6f8a70b5b667d57cee8b6232e327a38a "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1763739851.52435 "d:/KULIAH/Semester 7/Pembelajaran Mendalam/VisionTransformer-Comparison/laporan/main.tex" "main.pdf" "main" 1763739853.21108 0
+["pdflatex"] 1763742167.88616 "d:/KULIAH/Semester 7/Pembelajaran Mendalam/VisionTransformer-Comparison/laporan/main.tex" "main.pdf" "main" 1763742169.58095 0
   "C:/Program Files/MiKTeX/fonts/tfm/jknappen/ec/tcrm1200.tfm" 993062508 1444 95ffe0f19b974d50849790c8225c7ef7 ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1233951848 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -121,12 +121,12 @@
   "Figure/grafik-training.png" 1763737235 125593 bdfc3bb29258195a1d4f676775eec79b ""
   "Figure/grafik-validation.png" 1763737640 97778 5b00dee338795e2bfd2b561ab958cb31 ""
   "Figure/logo-itera.png" 1763629618 8765 2265886b2a8124b1c9eaabbdf6627cfe ""
-  "d:/KULIAH/Semester 7/Pembelajaran Mendalam/VisionTransformer-Comparison/laporan/main.tex" 1763739851 24419 67ef1117a649b7b29dfd53d02cee7c5b ""
-  "main.aux" 1763739852 6101 6f8a70b5b667d57cee8b6232e327a38a "pdflatex"
+  "d:/KULIAH/Semester 7/Pembelajaran Mendalam/VisionTransformer-Comparison/laporan/main.tex" 1763742167 24468 b64fb65ae4cd4c9376c4997d7b98eb4b ""
+  "main.aux" 1763742168 6101 6f8a70b5b667d57cee8b6232e327a38a "pdflatex"
   "main.bbl" 1763739054 3099 0f7d31c4e4c12965d49d58381d6d7a6f "bibtex main"
-  "main.out" 1763739852 5450 057b97d5a60ed32eda68bdfe42d0d56f "pdflatex"
-  "main.tex" 1763739851 24419 67ef1117a649b7b29dfd53d02cee7c5b ""
-  "main.toc" 1763739852 2903 4e24d04a1267d7d9987101181d2707a8 "pdflatex"
+  "main.out" 1763742168 5450 057b97d5a60ed32eda68bdfe42d0d56f "pdflatex"
+  "main.tex" 1763742167 24468 b64fb65ae4cd4c9376c4997d7b98eb4b ""
+  "main.toc" 1763742168 2903 4e24d04a1267d7d9987101181d2707a8 "pdflatex"
   (generated)
   "main.aux"
   "main.log"

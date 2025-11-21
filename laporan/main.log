@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.1)  21 NOV 2025 22:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.1)  21 NOV 2025 23:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -566,17 +566,17 @@ Overfull \hbox (39.93135pt too wide) in paragraph at lines 181--189
 [8]
 
 [9]
-<Figure/grafik-training.png, id=258, 1293.633pt x 714.7503pt>
+<Figure/grafik-training.png, id=259, 1293.633pt x 714.7503pt>
 File: Figure/grafik-training.png Graphic file (type png)
 <use Figure/grafik-training.png>
 Package pdftex.def Info: Figure/grafik-training.png  used on input line 345.
 (pdftex.def)             Requested size: 441.01773pt x 243.66626pt.
-<Figure/grafik-validation.png, id=260, 1148.3703pt x 354.123pt>
+<Figure/grafik-validation.png, id=261, 1148.3703pt x 354.123pt>
 File: Figure/grafik-validation.png Graphic file (type png)
 <use Figure/grafik-validation.png>
 Package pdftex.def Info: Figure/grafik-validation.png  used on input line 351.
 (pdftex.def)             Requested size: 441.01773pt x 135.99464pt.
-<Figure/confusion-matrix.png, id=261, 1422.2736pt x 426.393pt>
+<Figure/confusion-matrix.png, id=262, 1422.2736pt x 426.393pt>
 File: Figure/confusion-matrix.png Graphic file (type png)
 <use Figure/confusion-matrix.png>
 Package pdftex.def Info: Figure/confusion-matrix.png  used on input line 357.
@@ -592,8 +592,8 @@ Package pdftex.def Info: Figure/confusion-matrix.png  used on input line 357.
 [13] (main.bbl)
 
 [14]
-Overfull \hbox (122.7546pt too wide) in paragraph at lines 417--419
-\OT1/cmr/m/n/12 (-20) Source co-de leng-kap eks-pe-ri-men ini ter-se-dia pa-da re-po-si-tory \OT1/cmtt/m/n/12 https://github.com/username/repository-name
+Overfull \hbox (314.17969pt too wide) in paragraph at lines 417--419
+\OT1/cmr/m/n/12 (-20) Source co-de leng-kap eks-pe-ri-men ini ter-se-dia pa-da re-po-si-tory \OT1/cmtt/m/n/12 https://github.com/122140155-rustian-afencius/VisionTransformer-Comparison
  []
 
 
@@ -620,9 +620,9 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  75i,10n,79p,1083b,650s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\ACER\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (16 pages, 481801 bytes).
+Output written on main.pdf (16 pages, 482844 bytes).
 PDF statistics:
- 379 PDF objects out of 1000 (max. 8388607)
+ 380 PDF objects out of 1000 (max. 8388607)
  79 named destinations out of 1000 (max. 500000)
  27421 words of extra memory for PDF output out of 29859 (max. 10000000)
 
